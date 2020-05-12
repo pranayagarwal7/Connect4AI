@@ -10,7 +10,7 @@ Instructions:
 3) pip3 install pygame
 4) pip3 install math
 
-After installing the required packages, run the program python3 connect4AI.py
+After installing the required packages, run the program python3 connect4AI.py .
 Voila and Enjoy!
 
 I have played this game and won 3 out of 10 games!
