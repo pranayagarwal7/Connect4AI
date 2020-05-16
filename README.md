@@ -5,7 +5,7 @@ Taking the connect-four game algorithm and change the player 2 into AI.
 Artificial Intelligence was used by Numpy random function which allows AI to learn on it own and improve the difficulty.
 
 Instructions:
-1) pip3 install numpy, random, pygame, math
+1) pip3 install numpy
 2) pip3 install random
 3) pip3 install pygame
 4) pip3 install math
