@@ -1,0 +1,5 @@
+# Game Logic and Matrix Calculations
+numpy>=1.20.0
+
+# GUI and Graphics Rendering
+pygame>=2.0.0
