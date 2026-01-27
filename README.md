@@ -1,7 +1,7 @@
 # Connect4AI
-
+<div align="center">
 ***A comprehensive Connect Four suite built in Python with Pygame. This repository demonstrates the evolution of game logic from a standard two-player local game to an advanced AI-driven experience.***
-
+ </div>
   
 
 ## Game Modes
@@ -51,6 +51,21 @@ Ensure you have Python 3.x installed.
    
  - **Data Management:** NumPy matrices are used to represent the 6x7 board, allowing for rapid row/column/diagonal slicing during   
    win-check calculations.
+
+## Technologies Used
+
+<div align="center">
+
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white) ![Pygame](https://img.shields.io/badge/pygame-black?style=for-the-badge&logo=pygame&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+
+</div>
+
+## Skills & Logic
+<div align="center">
+  
+![Minimax Algorithm](https://img.shields.io/badge/Algorithm-Minimax-red?style=for-the-badge&logo=google-cloud&logoColor=white)  ![Game Development](https://img.shields.io/badge/Domain-Game%20Dev-orange?style=for-the-badge&logo=unity&logoColor=white) ![Matrix Operations](https://img.shields.io/badge/Math-Matrix%20Operations-blue?style=for-the-badge&logo=spreadsheet&logoColor=white) ![Data Structures](https://img.shields.io/badge/CS-Data%20Structures-green?style=for-the-badge&logo=codeforces&logoColor=white)
+
+</div>
 
 ## License
 
