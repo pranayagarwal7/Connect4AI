@@ -29,7 +29,7 @@ Ensure you have Python 3.x installed.
 
 2. Install Dependencies
 
-> pip install numpy pygame
+> pip install -r requirement.txt
 
 ### How to Run
 
