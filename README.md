@@ -1,7 +1,6 @@
 # Connect4AI
-<div align="center">
+
 ***A comprehensive Connect Four suite built in Python with Pygame. This repository demonstrates the evolution of game logic from a standard two-player local game to an advanced AI-driven experience.***
- </div>
   
 
 ## Game Modes
@@ -61,6 +60,7 @@ Ensure you have Python 3.x installed.
 </div>
 
 ## Skills & Logic
+
 <div align="center">
   
 ![Minimax Algorithm](https://img.shields.io/badge/Algorithm-Minimax-red?style=for-the-badge&logo=google-cloud&logoColor=white)  ![Game Development](https://img.shields.io/badge/Domain-Game%20Dev-orange?style=for-the-badge&logo=unity&logoColor=white) ![Matrix Operations](https://img.shields.io/badge/Math-Matrix%20Operations-blue?style=for-the-badge&logo=spreadsheet&logoColor=white) ![Data Structures](https://img.shields.io/badge/CS-Data%20Structures-green?style=for-the-badge&logo=codeforces&logoColor=white)
