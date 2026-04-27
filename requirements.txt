@@ -3,3 +3,6 @@ numpy>=1.20.0
 
 # GUI and Graphics Rendering
 pygame>=2.0.0
+
+# Web Interface
+streamlit>=1.30.0
