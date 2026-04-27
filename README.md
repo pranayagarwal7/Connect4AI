@@ -25,22 +25,6 @@ python connect4_with_ai.py
 
 ---
 
-## Project Structure
-
-```
-Connect4AI/
-├── src/
-│   ├── constants.py   — colors, board dimensions, piece values
-│   ├── board.py       — board logic (create, drop, win-check)
-│   └── ai.py          — minimax + alpha-beta pruning + scoring
-├── app.py             — Streamlit web UI
-├── connect4.py        — Pygame two-player entry
-├── connect4_with_ai.py— Pygame vs-AI entry
-└── requirements.txt
-```
-
----
-
 ## Installation
 
 ```bash
