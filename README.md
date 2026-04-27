@@ -85,14 +85,12 @@ The AI uses **Minimax with alpha-beta pruning** at depth 5.
 
 ## What's Next — v2 (Machine Learning)
 
-Future versions will likely move away from hand-crafted heuristics toward learned strategies:
+Future versions will likely replace the hand-coded scoring with a simple neural network trained on game data:
 
-- **Deep Q-Network (DQN)** — train an agent via self-play using reinforcement learning; the board state becomes the input tensor and the network learns a Q-value per column
-- **Policy + Value network** — similar to AlphaZero: one network predicts the best move (policy head) and evaluates the position (value head), guided by Monte Carlo Tree Search
-- **Self-play curriculum** — start the agent against a random opponent, progressively increase difficulty as win rate climbs
-- **Exportable model** — trained weights shipped with the repo so users can play against the learned agent without running training themselves
-
-The goal: an AI that discovers strategies (e.g. odd/even threat theory) without being explicitly programmed with them.
+- Collect board states and outcomes from many self-play games
+- Train a basic neural network (e.g. a few dense layers with scikit-learn or PyTorch) to predict which column is the best move given a board state
+- Swap the minimax scoring function with the trained model's prediction
+- Keep everything else the same — same board logic, same Streamlit UI
 
 ---
 
