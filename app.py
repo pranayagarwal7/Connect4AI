@@ -16,6 +16,13 @@ st.markdown("""
 
 html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 
+@keyframes dropIn {
+    0%   { transform: translateY(-320px); opacity: 0.6; }
+    65%  { transform: translateY(6px); }
+    82%  { transform: translateY(-3px); }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
 .board {
     display: grid;
     grid-template-columns: repeat(7, 64px);
@@ -30,52 +37,57 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    transition: background 0.15s ease;
 }
-.empty  { background: #1f2937; }
-.red    { background: #ef4444; box-shadow: 0 0 10px #ef444466; }
-.yellow { background: #eab308; box-shadow: 0 0 10px #eab30866; }
+.empty {
+    background: #1f2937;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
+}
+.red    { background: #ef4444; box-shadow: 0 0 12px #ef444455; }
+.yellow { background: #eab308; box-shadow: 0 0 12px #eab30855; }
+.new-piece { animation: dropIn 0.32s cubic-bezier(0.33, 1, 0.68, 1) forwards; }
 
 div[data-testid="column"] button {
     background: #111827 !important;
-    color: #9ca3af !important;
-    border: 1px solid #374151 !important;
+    color: #4b5563 !important;
+    border: 1px solid #1f2937 !important;
     border-radius: 8px !important;
-    font-size: 12px !important;
-    padding: 4px 0 !important;
+    font-size: 14px !important;
+    padding: 2px 0 !important;
     width: 100% !important;
-    transition: all 0.15s ease !important;
+    transition: color 0.1s, border-color 0.1s !important;
 }
 div[data-testid="column"] button:hover {
-    border-color: #6b7280 !important;
-    color: #f9fafb !important;
+    border-color: #374151 !important;
+    color: #d1d5db !important;
 }
 
 .status {
     text-align: center;
-    font-size: 15px;
-    color: #9ca3af;
-    margin: 6px 0 16px 0;
+    font-size: 14px;
+    color: #6b7280;
+    margin: 8px 0 10px 0;
+    letter-spacing: 0.02em;
 }
 .winner {
     text-align: center;
     font-size: 22px;
     font-weight: 600;
-    margin: 12px 0;
+    margin: 14px 0 4px 0;
 }
 .title {
     text-align: center;
     font-size: 36px;
     font-weight: 600;
     letter-spacing: -1px;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     color: #f9fafb;
 }
 .subtitle {
     text-align: center;
-    color: #6b7280;
-    font-size: 14px;
-    margin-bottom: 40px;
+    color: #4b5563;
+    font-size: 13px;
+    margin-bottom: 44px;
+    letter-spacing: 0.08em;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -88,20 +100,22 @@ def init_game(mode):
     st.session_state.game_over = False
     st.session_state.winner = None
     st.session_state.pending_col = None
+    st.session_state.last_move = None
 
 
-def render_board(board):
+def render_board(board, last_move=None):
     html = '<div class="board">'
     for r in range(ROW_COUNT - 1, -1, -1):
         for c in range(COLUMN_COUNT):
             val = board[r][c]
+            is_new = last_move == (r, c)
             if val == PLAYER_PIECE:
-                cls = "red"
+                cls = "cell red" + (" new-piece" if is_new else "")
             elif val == AI_PIECE:
-                cls = "yellow"
+                cls = "cell yellow" + (" new-piece" if is_new else "")
             else:
-                cls = "empty"
-            html += f'<div class="cell {cls}"></div>'
+                cls = "cell empty"
+            html += f'<div class="{cls}"></div>'
     html += '</div>'
     st.markdown(html, unsafe_allow_html=True)
 
@@ -109,6 +123,7 @@ def render_board(board):
 def process_move(col):
     board = st.session_state.board
     mode = st.session_state.mode
+    st.session_state.last_move = None
 
     if not is_valid_location(board, col):
         return
@@ -116,6 +131,7 @@ def process_move(col):
     piece = PLAYER_PIECE if st.session_state.turn == PLAYER else AI_PIECE
     row = get_next_open_row(board, col)
     drop_piece(board, row, col, piece)
+    st.session_state.last_move = (row, col)
 
     if winning_move(board, piece):
         st.session_state.game_over = True
@@ -127,7 +143,7 @@ def process_move(col):
 
     if not get_valid_locations(board):
         st.session_state.game_over = True
-        st.session_state.winner = None  # draw
+        st.session_state.winner = None
         return
 
     st.session_state.turn = AI if st.session_state.turn == PLAYER else PLAYER
@@ -137,6 +153,7 @@ def process_move(col):
         if ai_col is not None and is_valid_location(board, ai_col):
             ai_row = get_next_open_row(board, ai_col)
             drop_piece(board, ai_row, ai_col, AI_PIECE)
+            st.session_state.last_move = (ai_row, ai_col)
             if winning_move(board, AI_PIECE):
                 st.session_state.game_over = True
                 st.session_state.winner = "AI"
@@ -148,7 +165,7 @@ def process_move(col):
         st.session_state.turn = PLAYER
 
 
-# ── Landing ──────────────────────────────────────────────────────────────────
+# ── Landing ───────────────────────────────────────────────────────────────────
 
 if "mode" not in st.session_state:
     st.session_state.mode = None
@@ -167,49 +184,53 @@ if st.session_state.mode is None:
             init_game("vs_ai")
             st.rerun()
 
-# ── Game ─────────────────────────────────────────────────────────────────────
+# ── Game ──────────────────────────────────────────────────────────────────────
 
 else:
-    if st.session_state.get("pending_col") is not None and not st.session_state.game_over:
-        col = st.session_state.pending_col
-        st.session_state.pending_col = None
-        process_move(col)
+    @st.fragment
+    def game_view():
+        if st.session_state.get("pending_col") is not None and not st.session_state.game_over:
+            col = st.session_state.pending_col
+            st.session_state.pending_col = None
+            process_move(col)
 
-    render_board(st.session_state.board)
+        render_board(st.session_state.board, st.session_state.get("last_move"))
 
-    if st.session_state.game_over:
-        if st.session_state.winner:
-            color = "#ef4444" if st.session_state.winner in ("Player 1", "You") else "#eab308"
-            st.markdown(
-                f'<div class="winner" style="color:{color}">{st.session_state.winner} wins</div>',
-                unsafe_allow_html=True,
-            )
+        if st.session_state.game_over:
+            if st.session_state.winner:
+                color = "#ef4444" if st.session_state.winner in ("Player 1", "You") else "#eab308"
+                st.markdown(
+                    f'<div class="winner" style="color:{color}">{st.session_state.winner} wins</div>',
+                    unsafe_allow_html=True,
+                )
+            else:
+                st.markdown('<div class="winner" style="color:#6b7280">Draw</div>', unsafe_allow_html=True)
+
+            c1, c2 = st.columns(2, gap="small")
+            with c1:
+                if st.button("Play Again", use_container_width=True):
+                    init_game(st.session_state.mode)
+                    st.rerun(scope="fragment")
+            with c2:
+                if st.button("Menu", use_container_width=True):
+                    st.session_state.mode = None
+                    st.rerun()
         else:
-            st.markdown('<div class="winner" style="color:#6b7280">Draw</div>', unsafe_allow_html=True)
+            if st.session_state.mode == "two_player":
+                label = "Player 1's turn" if st.session_state.turn == PLAYER else "Player 2's turn"
+            else:
+                label = "Your turn"
+            st.markdown(f'<div class="status">{label}</div>', unsafe_allow_html=True)
 
-        c1, c2 = st.columns(2, gap="small")
-        with c1:
-            if st.button("Play Again", use_container_width=True):
-                init_game(st.session_state.mode)
-                st.rerun()
-        with c2:
-            if st.button("Menu", use_container_width=True):
+            cols = st.columns(COLUMN_COUNT, gap="small")
+            for i, c in enumerate(cols):
+                with c:
+                    if st.button("▾", key=f"col_{i}", use_container_width=True):
+                        st.session_state.pending_col = i
+                        st.rerun(scope="fragment")
+
+            if st.button("← Menu", use_container_width=False):
                 st.session_state.mode = None
                 st.rerun()
-    else:
-        if st.session_state.mode == "two_player":
-            label = "Player 1's turn" if st.session_state.turn == PLAYER else "Player 2's turn"
-        else:
-            label = "Your turn"
-        st.markdown(f'<div class="status">{label}</div>', unsafe_allow_html=True)
 
-        cols = st.columns(COLUMN_COUNT, gap="small")
-        for i, col in enumerate(cols):
-            with col:
-                if st.button("▾", key=f"col_{i}", use_container_width=True):
-                    st.session_state.pending_col = i
-                    st.rerun()
-
-        if st.button("← Menu", use_container_width=False):
-            st.session_state.mode = None
-            st.rerun()
+    game_view()
