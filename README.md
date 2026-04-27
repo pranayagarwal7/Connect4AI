@@ -1,31 +1,32 @@
 # Connect 4 AI
 
-***A Connect Four suite built in Python — from local two-player to AI opponent to a browser-based web interface.***
+Python Connect Four with a minimax AI. Runs in the browser via Streamlit or on the desktop via Pygame.
 
 ---
 
-## Game Modes
+## Running it
 
-### Streamlit Web App (recommended)
-Single entry point with a mode picker in the browser.
+### Browser
 
 ```bash
 streamlit run app.py
 ```
 
-### Pygame Desktop
-**Two-player (local PvP):**
+### Desktop (Pygame)
+
+Two players:
 ```bash
 python connect4.py
 ```
-**vs AI:**
+
+vs AI:
 ```bash
 python connect4_with_ai.py
 ```
 
 ---
 
-## Installation
+## Setup
 
 ```bash
 git clone https://github.com/pranayagarwal7/Connect4AI.git
@@ -33,16 +34,16 @@ cd Connect4AI
 pip install -r requirements.txt
 ```
 
+For Pygame desktop mode, install the extra dep:
+```bash
+pip install -r requirements-desktop.txt
+```
+
 ---
 
-## How the AI Works
+## How the AI works
 
-The AI uses **Minimax with alpha-beta pruning** at depth 5.
-
-- Scores board windows (4-cell slices) across all directions
-- Prioritizes center-column control
-- Blocks immediate threats and pursues winning sequences
-- Alpha-beta cuts redundant branches — depth 5 runs fast enough for real-time play
+Minimax with alpha-beta pruning at depth 5. It scores every 4-cell window across rows, columns, and diagonals, with extra weight on center-column control. Alpha-beta prunes branches that can't change the result, so it stays fast.
 
 ---
 
@@ -67,14 +68,9 @@ The AI uses **Minimax with alpha-beta pruning** at depth 5.
 
 ---
 
-## What's Next — v2 (Machine Learning)
+## What's next
 
-Future versions will likely replace the hand-coded scoring with a simple neural network trained on game data:
-
-- Collect board states and outcomes from many self-play games
-- Train a basic neural network (e.g. a few dense layers with scikit-learn or PyTorch) to predict which column is the best move given a board state
-- Swap the minimax scoring function with the trained model's prediction
-- Keep everything else the same — same board logic, same Streamlit UI
+v2 will probably replace the hand-coded scoring with a small neural network. Generate self-play games, collect board states and outcomes, train a few dense layers in scikit-learn or PyTorch to predict the best column, drop it in where the minimax scorer lives. Same board, same UI.
 
 ---
 
@@ -84,4 +80,4 @@ MIT
 
 ---
 
-*Verdict: the minimax AI is tough — I've only won 3 out of 10. Think you can do better?*
+*I've only beaten the AI 3 times out of 10. Think you can do better?*
