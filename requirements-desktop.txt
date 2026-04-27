@@ -1,0 +1,3 @@
+# Extra deps for Pygame desktop mode (connect4.py / connect4_with_ai.py)
+-r requirements.txt
+pygame>=2.0.0
